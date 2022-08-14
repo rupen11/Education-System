@@ -1,8 +1,10 @@
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
+import { connection } from './db/db'
 
 dotenv.config();
+connection();
 
 const app: Express = express();
 const port = process.env.PORT;
