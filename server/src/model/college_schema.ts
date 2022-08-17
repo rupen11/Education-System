@@ -1,15 +1,17 @@
-import mongoose, { Schema, model } from 'mongoose';
+import { Schema, model } from 'mongoose';
+import { CollegeSchemaEntity } from '../type';
+import { schema_name } from './schemaName';
 
-const CollegeSchema = new Schema({
+const college_schema = new Schema<CollegeSchemaEntity>({
     adminId: {
-        type: mongoose.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         required: true,
-        ref: 'SuperAdmins'
+        ref: 'super_admin_schema'
     },
     universityId: {
-        type: mongoose.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         required: true,
-        ref: 'Universities'
+        ref: 'university_schema'
     },
     collegeName: {
         type: String,
@@ -24,7 +26,7 @@ const CollegeSchema = new Schema({
         required: true,
     },
     courses: {
-        type: Array,
+        type: [],
         required: true,
     },
     city: {
@@ -49,4 +51,4 @@ const CollegeSchema = new Schema({
     }
 });
 
-module.exports = model("Colleges", CollegeSchema);
+module.exports = model<CollegeSchemaEntity>(schema_name.College, college_schema);

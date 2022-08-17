@@ -1,31 +1,33 @@
-import mongoose, { Schema, model } from 'mongoose';
+import { Schema, model } from 'mongoose';
+import { LectureSchemaEntity } from '../type';
+import { schema_name } from './schemaName';
 
-const LectureSchema = new Schema({
+const lecture_schema = new Schema<LectureSchemaEntity>({
     collegeId: {
-        type: mongoose.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         required: true,
-        ref: 'Colleges'
+        ref: 'college_schema'
     },
     courseId: {
-        type: mongoose.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         required: true,
-        ref: 'Courses'
+        ref: 'course_schema'
     },
-    facutlyId: {
-        type: mongoose.Types.ObjectId,
+    facultyId: {
+        type: Schema.Types.ObjectId,
         required: true,
-        ref: 'Faculties'
+        ref: 'faculty_schema'
     },
     subjectName: {
         type: String,
         required: true,
     },
     joinStudents: {
-        type: Array,
+        type: [],
         required: true,
     },
     enrollStudents: {
-        type: Array,
+        type: [],
         required: true,
     },
     startTime: {
@@ -50,4 +52,4 @@ const LectureSchema = new Schema({
     }
 });
 
-module.exports = model("Lectures", LectureSchema);
+module.exports = model<LectureSchemaEntity>(schema_name.Lecture, lecture_schema);

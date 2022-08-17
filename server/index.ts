@@ -1,13 +1,14 @@
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
-import { connection } from './db/db'
+import { connectMongoDB } from './src/db'
+import { config } from './src/config';
 
 dotenv.config();
-connection();
+connectMongoDB();
 
 const app: Express = express();
-const port = process.env.PORT;
+const port = config.serverPort;
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));

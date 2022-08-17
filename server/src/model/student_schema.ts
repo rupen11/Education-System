@@ -1,23 +1,25 @@
-import mongoose, { Schema, model } from 'mongoose';
+import { Schema, model } from 'mongoose';
+import { schema_name } from './schemaName';
+import { StudentSchemaEntity } from '../type';
 
-const StudentSchema = new Schema({
+const student_schema = new Schema<StudentSchemaEntity>({
     userId: {
-        type: mongoose.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         required: true,
         ref: 'Users'
     },
     collegeId: {
-        type: mongoose.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         required: true,
         ref: 'Colleges'
     },
     universityId: {
-        type: mongoose.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         required: true,
         ref: 'Universities'
     },
     courseId: {
-        type: mongoose.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         required: true,
         ref: 'Courses'
     },
@@ -42,7 +44,7 @@ const StudentSchema = new Schema({
         required: true,
     },
     previousDetails: {
-        type: Array,
+        type: [],
         required: true,
     },
     state: {
@@ -55,4 +57,4 @@ const StudentSchema = new Schema({
     }
 });
 
-module.exports = model("Students", StudentSchema);
+module.exports = model<StudentSchemaEntity>(schema_name.Student, student_schema);

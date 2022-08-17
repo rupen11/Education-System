@@ -1,6 +1,8 @@
-import mongoose, { Schema, model } from 'mongoose';
+import { Schema, model } from 'mongoose';
+import { UserSchemaEntity } from '../type';
+import { schema_name } from './schemaName';
 
-const UserSchema = new Schema({
+const user_schema = new Schema<UserSchemaEntity>({
     role: {
         type: Number,
         required: true,
@@ -22,7 +24,7 @@ const UserSchema = new Schema({
         required: true,
     },
     address: {
-        type: Array,
+        type: [],
         required: true,
     },
     dateOfBirth: {
@@ -31,4 +33,4 @@ const UserSchema = new Schema({
     }
 });
 
-module.exports = model("Users", UserSchema);
+module.exports = model<UserSchemaEntity>(schema_name.User, user_schema);

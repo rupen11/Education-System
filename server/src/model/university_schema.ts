@@ -1,16 +1,18 @@
-import mongoose, { Schema, model } from 'mongoose';
+import { Schema, model } from 'mongoose';
+import { UniversitySchemaEntity } from '../type';
+import { schema_name } from './schemaName';
 
-const UniversitySchema = new Schema({
+const university_schema = new Schema<UniversitySchemaEntity>({
     adminId: {
-        type: mongoose.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         required: true,
-        ref: 'SuperAdmins'
+        ref: 'super_admin_schema'
     },
     universityName: {
         type: String,
         required: true,
     },
-    state_: {
+    universityState: {
         type: String,
         required: true,
     },
@@ -23,7 +25,7 @@ const UniversitySchema = new Schema({
         required: true,
     },
     colleges: {
-        type: Array,
+        type: [],
         required: true,
     },
     state: {
@@ -36,4 +38,4 @@ const UniversitySchema = new Schema({
     }
 });
 
-module.exports = model("Universities", UniversitySchema);
+module.exports = model<UniversitySchemaEntity>(schema_name.University, university_schema);

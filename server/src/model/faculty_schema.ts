@@ -1,23 +1,25 @@
-import mongoose, { Schema, model } from 'mongoose';
+import { Schema, model } from 'mongoose';
+import { FacultySchemaEntity } from '../type';
+import { schema_name } from './schemaName';
 
-const FacultySchema = new Schema({
+const faculty_schema = new Schema<FacultySchemaEntity>({
     userId: {
-        type: mongoose.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         required: true,
-        ref: 'Users'
+        ref: 'user_schema'
     },
     universityId: {
-        type: mongoose.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         required: true,
-        ref: 'Universities'
+        ref: 'university_schema'
     },
     collegeId: {
-        type: mongoose.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         required: true,
-        ref: 'Colleges'
+        ref: 'college_schema'
     },
     qualifications: {
-        type: Array,
+        type: [],
         required: true,
     },
     permanentAddress: {
@@ -25,15 +27,15 @@ const FacultySchema = new Schema({
         required: true,
     },
     streams: {
-        type: Array,
+        type: [],
         required: true,
     },
     courses: {
-        type: Array,
+        type: [],
         required: true,
     },
     subjects: {
-        type: Array,
+        type: [],
         required: true,
     },
     experience: {
@@ -50,4 +52,4 @@ const FacultySchema = new Schema({
     }
 });
 
-module.exports = model("Faculties", FacultySchema);
+module.exports = model<FacultySchemaEntity>(schema_name.Faculty, faculty_schema);
