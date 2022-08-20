@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose';
 import { LectureSchemaEntity } from '../type';
 import { schema_name } from './schemaName';
 
-const lecture_schema = new Schema<LectureSchemaEntity>({
+const lectureSchema = new Schema<LectureSchemaEntity>({
     collegeId: {
         type: Schema.Types.ObjectId,
         required: true,
@@ -43,13 +43,13 @@ const lecture_schema = new Schema<LectureSchemaEntity>({
         reuqired: true
     },
     state: {
-        tpye: Number,
+        type: Number,
         required: true,
     },
     stateCode: {
-        tpye: Number,
+        type: Number,
         required: true,
     }
 });
 
-module.exports = model<LectureSchemaEntity>(schema_name.Lecture, lecture_schema);
+export default model<LectureSchemaEntity>(schema_name.Lecture, lectureSchema);

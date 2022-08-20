@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose';
 import { UserSchemaEntity } from '../type';
 import { schema_name } from './schemaName';
 
-const user_schema = new Schema<UserSchemaEntity>({
+const userSchema = new Schema<UserSchemaEntity>({
     role: {
         type: Number,
         required: true,
@@ -33,4 +33,4 @@ const user_schema = new Schema<UserSchemaEntity>({
     }
 });
 
-module.exports = model<UserSchemaEntity>(schema_name.User, user_schema);
+export default model<UserSchemaEntity>(schema_name.User, userSchema);

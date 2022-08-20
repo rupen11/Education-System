@@ -1,0 +1,1 @@
+export { default as collegeRouter } from './college_router'

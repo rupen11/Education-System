@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose';
 import { UniversitySchemaEntity } from '../type';
 import { schema_name } from './schemaName';
 
-const university_schema = new Schema<UniversitySchemaEntity>({
+const universitySchema = new Schema<UniversitySchemaEntity>({
     adminId: {
         type: Schema.Types.ObjectId,
         required: true,
@@ -29,13 +29,13 @@ const university_schema = new Schema<UniversitySchemaEntity>({
         required: true,
     },
     state: {
-        tpye: Number,
+        type: Number,
         required: true,
     },
     stateCode: {
-        tpye: Number,
+        type: Number,
         required: true,
     }
 });
 
-module.exports = model<UniversitySchemaEntity>(schema_name.University, university_schema);
+export default model<UniversitySchemaEntity>(schema_name.University, universitySchema);

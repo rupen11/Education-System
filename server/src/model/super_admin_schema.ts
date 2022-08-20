@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose';
 import { SuperAdminSchemaEntity } from '../type';
 import { schema_name } from './schemaName';
 
-const super_admin_schema = new Schema<SuperAdminSchemaEntity>({
+const superAdminSchema = new Schema<SuperAdminSchemaEntity>({
     userId: {
         type: Schema.Types.ObjectId,
         required: true,
@@ -18,13 +18,13 @@ const super_admin_schema = new Schema<SuperAdminSchemaEntity>({
         required: true,
     },
     state: {
-        tpye: Number,
+        type: Number,
         required: true,
     },
     stateCode: {
-        tpye: Number,
+        type: Number,
         required: true,
     }
 });
 
-module.exports = model<SuperAdminSchemaEntity>(schema_name.Superadmin, super_admin_schema);
+export default model<SuperAdminSchemaEntity>(schema_name.Superadmin, superAdminSchema);

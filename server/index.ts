@@ -3,15 +3,17 @@ import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import { connectMongoDB } from './src/db'
 import { config } from './src/config';
+import { collegeRouter } from "./src/router"
 
 dotenv.config();
 connectMongoDB();
 
 const app: Express = express();
-const port = config.serverPort;
+const port: string | number = config.serverPort;
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use("/api/college/v1", collegeRouter);
 
 app.get("/", (req: Request, res: Response) => {
     return res.send("Hello, world!");

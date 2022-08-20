@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose';
 import { CollegeSchemaEntity } from '../type';
 import { schema_name } from './schemaName';
 
-const college_schema = new Schema<CollegeSchemaEntity>({
+const collegeSchema = new Schema<CollegeSchemaEntity>({
     adminId: {
         type: Schema.Types.ObjectId,
         required: true,
@@ -36,19 +36,31 @@ const college_schema = new Schema<CollegeSchemaEntity>({
     email: {
         type: String,
         required: true,
+        unique: true
     },
     website: {
         type: String,
         required: true,
     },
     state: {
-        tpye: Number,
+        type: Number,
         required: true,
     },
     stateCode: {
-        tpye: Number,
+        type: Number,
         required: true,
+    }
+}, {
+    toJSON: {
+        virtuals: true,
+    },
+    toObject: {
+        virtuals: true,
     }
 });
 
-module.exports = model<CollegeSchemaEntity>(schema_name.College, college_schema);
+collegeSchema.virtual('id').get(function () {
+    return this._id.toString();
+});
+
+export default model<CollegeSchemaEntity>(schema_name.College, collegeSchema);

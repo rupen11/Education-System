@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose';
 import { FacultySchemaEntity } from '../type';
 import { schema_name } from './schemaName';
 
-const faculty_schema = new Schema<FacultySchemaEntity>({
+const facultySchema = new Schema<FacultySchemaEntity>({
     userId: {
         type: Schema.Types.ObjectId,
         required: true,
@@ -43,13 +43,13 @@ const faculty_schema = new Schema<FacultySchemaEntity>({
         reuqired: true
     },
     state: {
-        tpye: Number,
+        type: Number,
         required: true,
     },
     stateCode: {
-        tpye: Number,
+        type: Number,
         required: true,
     }
 });
 
-module.exports = model<FacultySchemaEntity>(schema_name.Faculty, faculty_schema);
+export default model<FacultySchemaEntity>(schema_name.Faculty, facultySchema);

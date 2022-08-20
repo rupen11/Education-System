@@ -1,3 +1,4 @@
+export type DocumentId = string;
 export * from './CollegeSchemaEntity'
 export * from './CourseSchemaEntity'
 export * from './FacultySchemaEntity'
