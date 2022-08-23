@@ -17,6 +17,10 @@ const courseSchema = new Schema<CourseSchemaEntity>({
         type: String,
         required: true,
     },
+    courseCode: {
+        type: Number,
+        required: true
+    },
     streams: {
         type: [],
         required: true,
@@ -29,6 +33,10 @@ const courseSchema = new Schema<CourseSchemaEntity>({
         type: Number,
         required: true,
     }
+});
+
+courseSchema.virtual("id").get(function () {
+    return this._id.toString();
 });
 
 export default model<CourseSchemaEntity>(schema_name.Course, courseSchema);

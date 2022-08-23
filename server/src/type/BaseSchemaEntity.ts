@@ -3,6 +3,10 @@ export interface BaseSchemaEntity {
     stateCode: number;
 }
 
-export interface BasicPayloadEntity {
+export interface CourseCodeEntity {
+    courseCode?: number;
+}
+
+export interface BasicPayloadEntity extends CourseCodeEntity {
     email?: string;
 }
