@@ -8,7 +8,7 @@ const universitySchema = new Schema<UniversitySchemaEntity>({
         required: true,
         ref: 'super_admin_schema'
     },
-    universityName: {
+    name: {
         type: String,
         required: true,
     },
@@ -36,6 +36,10 @@ const universitySchema = new Schema<UniversitySchemaEntity>({
         type: Number,
         required: true,
     }
+});
+
+universitySchema.virtual("id").get(function () {
+    return this._id.toString();
 });
 
 export default model<UniversitySchemaEntity>(schema_name.University, universitySchema);

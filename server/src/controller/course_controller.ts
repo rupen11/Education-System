@@ -7,7 +7,7 @@ import { createData, deleteData, readData, readDataByIds, retriveData, updateDat
 export const createCourse = async (req: Request, res: Response) => {
     try {
         // super admin must have enter password if password is correct then good to go otherwise not allowed
-        const createCourse = await createData<CreateCoursePayload>(req.body, courseSchema, "courseCode");
+        const createCourse = await createData<CreateCoursePayload>(req.body, courseSchema, "courseCode", true);
 
         if (createCourse.success && createCourse.statusCode === responseStatuscode.success) return SuccessResponse(responseMessage.created, createCourse.data, res);
 
@@ -51,11 +51,11 @@ export const getCourses = async (req: Request, res: Response) => {
 
 export const retriveCourse = async (req: Request, res: Response) => {
     try {
-        const allcourseData = await retriveData(courseSchema);
+        const allCourseData = await retriveData(courseSchema);
 
-        if (allcourseData.success && allcourseData.statusCode === responseStatuscode.success) return SuccessResponse(responseMessage.fetched, allcourseData.data, res);
+        if (allCourseData.success && allCourseData.statusCode === responseStatuscode.success) return SuccessResponse(responseMessage.fetched, allCourseData.data, res);
 
-        return FailureResponse(allcourseData.statusCode, responseMessage.fetchingFail, res);
+        return FailureResponse(allCourseData.statusCode, responseMessage.fetchingFail, res);
     }
     catch (error) {
         return FailureResponse(responseStatuscode.badRequest, (error as Error).message, res);

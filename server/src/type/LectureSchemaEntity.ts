@@ -11,4 +11,9 @@ export interface LectureSchemaEntity extends BaseSchemaEntity {
     startTime: Date,
     endTime: Date,
     reschedule: boolean,
+    lectureCode: number
 }
+
+export type CreateLecturePayload = Omit<LectureSchemaEntity, 'collegeId' | 'courseId' | 'facultyId'>
+
+export type UpdateLecturePayload = Partial<CreateLecturePayload>;

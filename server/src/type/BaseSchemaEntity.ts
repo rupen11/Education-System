@@ -7,6 +7,10 @@ export interface CourseCodeEntity {
     courseCode?: number;
 }
 
-export interface BasicPayloadEntity extends CourseCodeEntity {
+export interface LectureCodeEntity {
+    lectureCode?: number;
+}
+
+export interface BasicPayloadEntity extends CourseCodeEntity, LectureCodeEntity {
     email?: string;
 }

@@ -42,6 +42,10 @@ const lectureSchema = new Schema<LectureSchemaEntity>({
         type: Boolean,
         reuqired: true
     },
+    lectureCode: {
+        type: Number,
+        required: true
+    },
     state: {
         type: Number,
         required: true,

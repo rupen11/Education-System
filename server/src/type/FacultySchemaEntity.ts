@@ -1,5 +1,6 @@
 import { Types } from "mongoose";
 import { BaseSchemaEntity } from "./BaseSchemaEntity";
+import { UserSchemaEntity } from "./UserSchemaEntity";
 
 export interface FacultySchemaEntity extends BaseSchemaEntity {
     userId: Types.ObjectId;
@@ -12,3 +13,7 @@ export interface FacultySchemaEntity extends BaseSchemaEntity {
     subjects: [],
     experience: string,
 }
+
+export type CreateFacultyPayload = Omit<FacultySchemaEntity & UserSchemaEntity, "">
+
+export type UpdateFacultyPayload = Partial<CreateFacultyPayload>;

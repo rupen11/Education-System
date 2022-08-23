@@ -7,7 +7,7 @@ import { createData, retriveData, readData, updateData, deleteData, readDataById
 export const createCollege = async (req: Request, res: Response) => {
     try {
         // super admin must have enter password if password is correct then good to go otherwise not allowed
-        const createCollege = await createData<CreateCollegePayload>(req.body, collegeSchema, "email");
+        const createCollege = await createData<CreateCollegePayload>(req.body, collegeSchema, "email", true);
 
         if (createCollege.success && createCollege.statusCode === responseStatuscode.success) return SuccessResponse(responseMessage.created, createCollege.data, res);
 

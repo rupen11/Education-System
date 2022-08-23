@@ -10,3 +10,7 @@ export interface UserSchemaEntity extends BaseSchemaEntity {
     address: [],
     dateOfBirth: Date,
 }
+
+export type CreateUserPayload = Omit<UserSchemaEntity, "">
+
+export type UpdateUserPayload = Partial<CreateUserPayload>;

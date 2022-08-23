@@ -3,17 +3,19 @@ import { BasicPayloadEntity } from "../type/BaseSchemaEntity";
 import { checkByCourseCode, checkByEmail } from "../utils";
 
 //Create Data
-export async function createData<T extends BasicPayloadEntity>(payload: T, mongoModel: any, exists: string): Promise<BaseResponseHandler<T>> {
-    if (exists === "email") {
-        const matchData = await checkByEmail(payload.email, mongoModel);
+export async function createData<T extends BasicPayloadEntity>(payload: T, mongoModel: any, exists: string, checker: boolean): Promise<BaseResponseHandler<T>> {
+    if (checker) {
+        if (exists === "email") {
+            const matchData = await checkByEmail(payload.email, mongoModel);
 
-        if (!matchData) return { data: null, success: false, statusCode: responseStatuscode.badRequest };
-    }
+            if (!matchData) return { data: null, success: false, statusCode: responseStatuscode.badRequest };
+        }
 
-    else if (exists === "coursename") {
-        const matchData = await checkByCourseCode(payload.courseCode, mongoModel);
+        else if (exists === "coursename") {
+            const matchData = await checkByCourseCode(payload.courseCode, mongoModel);
 
-        if (!matchData) return { data: null, success: false, statusCode: responseStatuscode.badRequest };
+            if (!matchData) return { data: null, success: false, statusCode: responseStatuscode.badRequest };
+        }
     }
 
     const createData = new mongoModel(payload);

@@ -1,1 +1,7 @@
 export * from "./college_controller"
+export * from "./course_controller"
+export * from "./university_controller"
+export * from "./lecture_controller"
+export * from "./faculty_controller"
+export * from "./student_contoller"
+export * from "./super_admin_controller"
