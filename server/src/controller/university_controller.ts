@@ -7,7 +7,7 @@ import { createData, deleteData, readData, readDataByIds, retriveData, updateDat
 export const createUniversity = async (req: Request, res: Response) => {
     try {
         // super admin must have enter password if password is correct then good to go otherwise not allowed
-        const createUniversity = await createData<CreateUniversityPayload>(req.body, universitySchema, "email", true);
+        const createUniversity = await createData<CreateUniversityPayload>(req.body, universitySchema, "email", true, false);
 
         if (createUniversity.success && createUniversity.statusCode === responseStatuscode.success) return SuccessResponse(responseMessage.created, createUniversity.data, res);
 
@@ -23,7 +23,7 @@ export const createUniversity = async (req: Request, res: Response) => {
 
 export const getUniversity = async (req: Request, res: Response) => {
     try {
-        const UniversityData = await readData(req.params.id, universitySchema);
+        const UniversityData = await readData(req.params.id, universitySchema, false);
 
         if (UniversityData.success && UniversityData.statusCode === responseStatuscode.success) return SuccessResponse(responseMessage.fetched, UniversityData.data, res);
 
@@ -66,7 +66,7 @@ export const retriveUniversity = async (req: Request, res: Response) => {
 export const updateUniversity = async (req: Request, res: Response) => {
     try {
         // super admin must have enter password if password is correct then good to go otherwise not allowed
-        const updateUniversity = await updateData<UpdateUniversityPayload>(req.body, universitySchema, req.params.id);
+        const updateUniversity = await updateData<UpdateUniversityPayload>(req.body, universitySchema, req.params.id, false);
 
         if (updateUniversity.success && updateUniversity.statusCode === responseStatuscode.success) return SuccessResponse(responseMessage.updated, updateUniversity.data, res);
 
@@ -81,7 +81,7 @@ export const updateUniversity = async (req: Request, res: Response) => {
 export const deleteUniversity = async (req: Request, res: Response) => {
     try {
         // super admin must have enter password if password is correct then good to go otherwise not allowed
-        const deleteUniversity = await deleteData(req.params.id, universitySchema);
+        const deleteUniversity = await deleteData(req.params.id, universitySchema, false);
 
         if (deleteUniversity.success && deleteUniversity.statusCode === responseStatuscode.success) return SuccessResponse(responseMessage.deleted, deleteUniversity.data, res);
 

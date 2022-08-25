@@ -11,7 +11,7 @@ router.route("/university").get(retriveUniversity);
 router.route("/university/:id").get(getUniversity);
 router.route("/university/:id").put(updateUniversity);
 router.route("/university/:id").delete(deleteUniversity);
-router.route("/universitys").post(getUniversities);
+router.route("/universities").post(getUniversities);
 
 export default router;
 

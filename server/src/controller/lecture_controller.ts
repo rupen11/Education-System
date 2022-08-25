@@ -7,7 +7,7 @@ import { createData, deleteData, readData, readDataByIds, retriveData, updateDat
 export const createLecture = async (req: Request, res: Response) => {
     try {
         // super admin must have enter password if password is correct then good to go otherwise not allowed
-        const createLecture = await createData<CreateLecturePayload>(req.body, lectureSchema, "", false);
+        const createLecture = await createData<CreateLecturePayload>(req.body, lectureSchema, "", false, false);
 
         if (createLecture.success && createLecture.statusCode === responseStatuscode.success) return SuccessResponse(responseMessage.created, createLecture.data, res);
 
@@ -23,7 +23,7 @@ export const createLecture = async (req: Request, res: Response) => {
 
 export const getLecture = async (req: Request, res: Response) => {
     try {
-        const LectureData = await readData(req.params.id, lectureSchema);
+        const LectureData = await readData(req.params.id, lectureSchema, false);
 
         if (LectureData.success && LectureData.statusCode === responseStatuscode.success) return SuccessResponse(responseMessage.fetched, LectureData.data, res);
 
@@ -66,7 +66,7 @@ export const retriveLecture = async (req: Request, res: Response) => {
 export const updateLecture = async (req: Request, res: Response) => {
     try {
         // super admin must have enter password if password is correct then good to go otherwise not allowed
-        const updateLecture = await updateData<UpdateLecturePayload>(req.body, lectureSchema, req.params.id);
+        const updateLecture = await updateData<UpdateLecturePayload>(req.body, lectureSchema, req.params.id, false);
 
         if (updateLecture.success && updateLecture.statusCode === responseStatuscode.success) return SuccessResponse(responseMessage.updated, updateLecture.data, res);
 
@@ -81,7 +81,7 @@ export const updateLecture = async (req: Request, res: Response) => {
 export const deleteLecture = async (req: Request, res: Response) => {
     try {
         // super admin must have enter password if password is correct then good to go otherwise not allowed
-        const deleteLecture = await deleteData(req.params.id, lectureSchema);
+        const deleteLecture = await deleteData(req.params.id, lectureSchema, false);
 
         if (deleteLecture.success && deleteLecture.statusCode === responseStatuscode.success) return SuccessResponse(responseMessage.deleted, deleteLecture.data, res);
 

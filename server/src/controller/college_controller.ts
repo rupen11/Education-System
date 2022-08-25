@@ -7,7 +7,7 @@ import { createData, retriveData, readData, updateData, deleteData, readDataById
 export const createCollege = async (req: Request, res: Response) => {
     try {
         // super admin must have enter password if password is correct then good to go otherwise not allowed
-        const createCollege = await createData<CreateCollegePayload>(req.body, collegeSchema, "email", true);
+        const createCollege = await createData<CreateCollegePayload>(req.body, collegeSchema, "email", true, false);
 
         if (createCollege.success && createCollege.statusCode === responseStatuscode.success) return SuccessResponse(responseMessage.created, createCollege.data, res);
 
@@ -23,7 +23,7 @@ export const createCollege = async (req: Request, res: Response) => {
 
 export const getCollege = async (req: Request, res: Response) => {
     try {
-        const collegeData = await readData(req.params.id, collegeSchema);
+        const collegeData = await readData(req.params.id, collegeSchema, false);
 
         if (collegeData.success && collegeData.statusCode === responseStatuscode.success) return SuccessResponse(responseMessage.fetched, collegeData.data, res);
 
@@ -66,7 +66,7 @@ export const retriveColleges = async (req: Request, res: Response) => {
 export const updateCollege = async (req: Request, res: Response) => {
     try {
         // super admin must have enter password if password is correct then good to go otherwise not allowed
-        const updateCollege = await updateData<UpdateCollegePayload>(req.body, collegeSchema, req.params.id);
+        const updateCollege = await updateData<UpdateCollegePayload>(req.body, collegeSchema, req.params.id, false);
 
         if (updateCollege.success && updateCollege.statusCode === responseStatuscode.success) return SuccessResponse(responseMessage.updated, updateCollege.data, res);
 
@@ -81,7 +81,7 @@ export const updateCollege = async (req: Request, res: Response) => {
 export const deleteCollege = async (req: Request, res: Response) => {
     try {
         // super admin must have enter password if password is correct then good to go otherwise not allowed
-        const deleteCollege = await deleteData(req.params.id, collegeSchema);
+        const deleteCollege = await deleteData(req.params.id, collegeSchema, false);
 
         if (deleteCollege.success && deleteCollege.statusCode === responseStatuscode.success) return SuccessResponse(responseMessage.deleted, deleteCollege.data, res);
 

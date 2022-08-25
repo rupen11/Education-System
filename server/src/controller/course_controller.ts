@@ -7,7 +7,7 @@ import { createData, deleteData, readData, readDataByIds, retriveData, updateDat
 export const createCourse = async (req: Request, res: Response) => {
     try {
         // super admin must have enter password if password is correct then good to go otherwise not allowed
-        const createCourse = await createData<CreateCoursePayload>(req.body, courseSchema, "courseCode", true);
+        const createCourse = await createData<CreateCoursePayload>(req.body, courseSchema, "courseCode", true, false);
 
         if (createCourse.success && createCourse.statusCode === responseStatuscode.success) return SuccessResponse(responseMessage.created, createCourse.data, res);
 
@@ -23,7 +23,7 @@ export const createCourse = async (req: Request, res: Response) => {
 
 export const getCourse = async (req: Request, res: Response) => {
     try {
-        const courseData = await readData(req.params.id, courseSchema);
+        const courseData = await readData(req.params.id, courseSchema, false);
 
         if (courseData.success && courseData.statusCode === responseStatuscode.success) return SuccessResponse(responseMessage.fetched, courseData.data, res);
 
@@ -66,7 +66,7 @@ export const retriveCourse = async (req: Request, res: Response) => {
 export const updateCourse = async (req: Request, res: Response) => {
     try {
         // super admin must have enter password if password is correct then good to go otherwise not allowed
-        const updateCourse = await updateData<UpdateCoursePayload>(req.body, courseSchema, req.params.id);
+        const updateCourse = await updateData<UpdateCoursePayload>(req.body, courseSchema, req.params.id, false);
 
         if (updateCourse.success && updateCourse.statusCode === responseStatuscode.success) return SuccessResponse(responseMessage.updated, updateCourse.data, res);
 
@@ -81,7 +81,7 @@ export const updateCourse = async (req: Request, res: Response) => {
 export const deleteCourse = async (req: Request, res: Response) => {
     try {
         // super admin must have enter password if password is correct then good to go otherwise not allowed
-        const deleteCourse = await deleteData(req.params.id, courseSchema);
+        const deleteCourse = await deleteData(req.params.id, courseSchema, false);
 
         if (deleteCourse.success && deleteCourse.statusCode === responseStatuscode.success) return SuccessResponse(responseMessage.deleted, deleteCourse.data, res);
 

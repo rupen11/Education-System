@@ -45,7 +45,7 @@ const studentSchema = new Schema<StudentSchemaEntity>({
     },
     previousDetails: {
         type: [],
-        required: true,
+        default: []
     },
     state: {
         type: Number,
@@ -55,6 +55,10 @@ const studentSchema = new Schema<StudentSchemaEntity>({
         type: Number,
         required: true,
     }
+});
+
+studentSchema.virtual('id').get(function () {
+    return this._id.toString();
 });
 
 export default model<StudentSchemaEntity>(schema_name.Student, studentSchema);

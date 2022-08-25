@@ -1,37 +1,80 @@
 import { BaseResponseHandler, responseStatuscode } from "../helper";
+import { userSchema } from "../model";
 import { BasicPayloadEntity } from "../type/BaseSchemaEntity";
 import { checkByCourseCode, checkByEmail } from "../utils";
+import { createUser, deleteUser, getUser, updateUser } from "./user_controller";
 
 //Create Data
-export async function createData<T extends BasicPayloadEntity>(payload: T, mongoModel: any, exists: string, checker: boolean): Promise<BaseResponseHandler<T>> {
+export async function createData<T extends BasicPayloadEntity>(payload: T, mongoModel: any, exists: string, checker: boolean, isUser: boolean): Promise<BaseResponseHandler<T>> {
     if (checker) {
         if (exists === "email") {
-            const matchData = await checkByEmail(payload.email, mongoModel);
+            if (isUser) {
+                const matchData = await checkByEmail(payload.email, userSchema);
 
-            if (!matchData) return { data: null, success: false, statusCode: responseStatuscode.badRequest };
+                if (!matchData) return { data: null, success: false, statusCode: responseStatuscode.badRequest };
+            }
+            else {
+                const matchData = await checkByEmail(payload.email, mongoModel);
+
+                if (!matchData) return { data: null, success: false, statusCode: responseStatuscode.badRequest };
+            }
         }
 
-        else if (exists === "coursename") {
+        else if (exists === "courseCode") {
             const matchData = await checkByCourseCode(payload.courseCode, mongoModel);
 
             if (!matchData) return { data: null, success: false, statusCode: responseStatuscode.badRequest };
         }
     }
 
-    const createData = new mongoModel(payload);
+    if (isUser) {
+        const { role, name, email, password, phone, address, dateOfBirth, ...rest } = payload;
+        const userObj = {
+            role, name, email, password, phone, address, dateOfBirth
+        };
 
-    const saveData = await createData.save();
+        const userData = await createUser(userObj);
 
-    if (!saveData) return { data: null, success: false, statusCode: responseStatuscode.internalServerError };
+        if (!userData.success) return { data: null, success: userData.success, statusCode: userData.statusCode };
 
-    return { data: saveData, success: true, statusCode: responseStatuscode.success };
+        rest.userId = userData.id;
+
+        const createStudentData = new mongoModel(rest);
+
+        let saveStudentData = await createStudentData.save();
+
+        if (!saveStudentData) return { data: null, success: false, statusCode: responseStatuscode.internalServerError }
+
+        const data = { studentData: saveStudentData, personalData: userData.data };
+
+        return { data, success: true, statusCode: responseStatuscode.success };
+    }
+    else {
+        const createData = new mongoModel(payload);
+
+        const saveData = await createData.save();
+
+        if (!saveData) return { data: null, success: false, statusCode: responseStatuscode.internalServerError };
+
+        return { data: saveData, success: true, statusCode: responseStatuscode.success };
+    }
 }
 
 //Read Data
-export async function readData<T>(id: any, mongoModel: any): Promise<BaseResponseHandler<T>> {
+export async function readData<T>(id: any, mongoModel: any, isUser: boolean): Promise<BaseResponseHandler<T>> {
     const getData = await mongoModel.findOne({ _id: id });
 
     if (!getData) return { data: null, success: false, statusCode: responseStatuscode.notFound };
+
+    if (isUser) {
+        const getUserData = await getUser(getData.userId);
+
+        if (!getUserData.success) return { data: null, success: false, statusCode: getUserData.statusCode };
+
+        const data = { studentData: getData, personalData: getUserData.data };
+
+        return { data, success: true, statusCode: responseStatuscode.success };
+    }
 
     return { data: getData, success: true, statusCode: responseStatuscode.success };
 }
@@ -55,19 +98,62 @@ export async function retriveData<T>(mongoModel: any): Promise<BaseResponseHandl
 }
 
 //Update Data
-export async function updateData<T>(payload: T, mongoModel: any, id: any): Promise<BaseResponseHandler<T>> {
-    const updateData = await mongoModel.findOneAndUpdate({ _id: id }, payload, { new: true });
+export async function updateData<T extends BasicPayloadEntity>(payload: T, mongoModel: any, id: any, isUser: boolean): Promise<BaseResponseHandler<T>> {
+    if (isUser) {
+        const { role, name, email, password, phone, address, dateOfBirth, ...rest } = payload;
+        // if (role || name || address || dateOfBirth || email || password || phone) {
+        const userObj = {
+            role, name, email, password, phone, address, dateOfBirth
+        };
 
-    if (!updateData) return { data: null, success: false, statusCode: responseStatuscode.badRequest };
+        if (payload.email) {
+            const matchData = await checkByEmail(payload.email, userSchema);
+
+            if (!matchData) return { data: null, success: false, statusCode: responseStatuscode.badRequest };
+        }
+
+        const updateUserData = await updateUser(userObj, id, mongoModel);
+
+        if (!updateUserData.success) return { data: null, success: false, statusCode: updateUserData.statusCode };
+
+        const updateData = await mongoModel.findOneAndUpdate({ _id: id }, rest, { new: true, runValidators: true });
+
+        if (!updateData) return { data: null, success: false, statusCode: responseStatuscode.internalServerError };
+
+        const data = { studentData: updateData, personalData: updateUserData.data };
+
+        return { data, success: true, statusCode: responseStatuscode.success };
+        // }
+    }
+
+    if (payload.email) {
+        const matchData = await checkByEmail(payload.email, mongoModel);
+
+        if (!matchData) return { data: null, success: false, statusCode: responseStatuscode.badRequest };
+    }
+
+    const updateData = await mongoModel.findOneAndUpdate({ _id: id }, payload, { new: true, runValidators: true });
+
+    if (!updateData) return { data: null, success: false, statusCode: responseStatuscode.internalServerError };
 
     return { data: updateData, success: true, statusCode: responseStatuscode.success };
 }
 
 //Delete Data
-export async function deleteData<T>(id: any, mongoModel: any): Promise<BaseResponseHandler<T>> {
+export async function deleteData<T>(id: any, mongoModel: any, isUser: boolean): Promise<BaseResponseHandler<T>> {
     const deleteData = await mongoModel.findOneAndDelete({ _id: id });
 
     if (!deleteData) return { data: null, success: false, statusCode: responseStatuscode.badRequest };
+
+    if (isUser) {
+        const deleteUserData = await deleteUser(deleteData.userId);
+
+        if (!deleteUserData.success) return { data: null, success: false, statusCode: deleteUserData.statusCode };
+
+        const data = { studentData: deleteData, personalData: deleteUserData.data };
+
+        return { data, success: true, statusCode: responseStatuscode.success };
+    }
 
     return { data: deleteData, success: true, statusCode: responseStatuscode.success };
 }

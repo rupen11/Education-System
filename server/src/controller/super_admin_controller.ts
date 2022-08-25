@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import { FailureResponse, responseMessage, responseStatuscode, SuccessResponse } from "../helper";
 import { superAdminSchema } from "../model";
-import { CreateSuperAdminPayload, UpdateSuperAdminPayload } from "../type";
+import { CreateUserPayload, UpdateUserPayload } from "../type";
 import { createData, deleteData, readData, readDataByIds, retriveData, updateData } from "./crud_controller";
 
 export const createSuperAdmin = async (req: Request, res: Response) => {
     try {
         // super admin must have enter password if password is correct then good to go otherwise not allowed
-        const createSuperAdmin = await createData<CreateSuperAdminPayload>(req.body, superAdminSchema, "email", true);
+        const createSuperAdmin = await createData<CreateUserPayload>(req.body, superAdminSchema, "email", true, true);
 
         if (createSuperAdmin.success && createSuperAdmin.statusCode === responseStatuscode.success) return SuccessResponse(responseMessage.created, createSuperAdmin.data, res);
 
@@ -23,7 +23,7 @@ export const createSuperAdmin = async (req: Request, res: Response) => {
 
 export const getSuperAdmin = async (req: Request, res: Response) => {
     try {
-        const SuperAdminData = await readData(req.params.id, superAdminSchema);
+        const SuperAdminData = await readData(req.params.id, superAdminSchema, true);
 
         if (SuperAdminData.success && SuperAdminData.statusCode === responseStatuscode.success) return SuccessResponse(responseMessage.fetched, SuperAdminData.data, res);
 
@@ -66,9 +66,11 @@ export const retriveSuperAdmin = async (req: Request, res: Response) => {
 export const updateSuperAdmin = async (req: Request, res: Response) => {
     try {
         // super admin must have enter password if password is correct then good to go otherwise not allowed
-        const updateSuperAdmin = await updateData<UpdateSuperAdminPayload>(req.body, superAdminSchema, req.params.id);
+        const updateSuperAdmin = await updateData<UpdateUserPayload>(req.body, superAdminSchema, req.params.id, true);
 
-        if (updateSuperAdmin.success && updateSuperAdmin.statusCode === responseStatuscode.success) return SuccessResponse(responseMessage.updated, updateSuperAdmin.data, res);
+        if (updateSuperAdmin.success) return SuccessResponse(responseMessage.updated, updateSuperAdmin.data, res);
+
+        if (updateSuperAdmin.statusCode === responseStatuscode.badRequest) return FailureResponse(updateSuperAdmin.statusCode, responseMessage.alreadyExists, res);
 
         return FailureResponse(updateSuperAdmin.statusCode, responseMessage.updatingFail, res);
     }
@@ -81,7 +83,7 @@ export const updateSuperAdmin = async (req: Request, res: Response) => {
 export const deleteSuperAdmin = async (req: Request, res: Response) => {
     try {
         // super admin must have enter password if password is correct then good to go otherwise not allowed
-        const deleteSuperAdmin = await deleteData(req.params.id, superAdminSchema);
+        const deleteSuperAdmin = await deleteData(req.params.id, superAdminSchema, true);
 
         if (deleteSuperAdmin.success && deleteSuperAdmin.statusCode === responseStatuscode.success) return SuccessResponse(responseMessage.deleted, deleteSuperAdmin.data, res);
 

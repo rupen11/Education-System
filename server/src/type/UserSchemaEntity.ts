@@ -1,14 +1,14 @@
 import { Date } from "mongoose";
 import { BaseSchemaEntity } from "./BaseSchemaEntity";
 
-export interface UserSchemaEntity extends BaseSchemaEntity {
+export interface UserSchemaEntity {
     role: number,
     name: string,
     email: string,
     password: string,
     phone: string,
-    address: [],
-    dateOfBirth: Date,
+    address: string,
+    dateOfBirth: string,
 }
 
 export type CreateUserPayload = Omit<UserSchemaEntity, "">

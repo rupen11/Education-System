@@ -5,11 +5,13 @@ export interface LectureSchemaEntity extends BaseSchemaEntity {
     collegeId: Types.ObjectId;
     courseId: Types.ObjectId;
     facultyId: Types.ObjectId;
-    subjectName: string,
+    name: string,
     joinStudents: [],
     enrollStudents: [],
-    startTime: Date,
-    endTime: Date,
+    // startTime: Date,
+    // endTime: Date,
+    startTime: string,
+    endTime: string,
     reschedule: boolean,
     lectureCode: number
 }

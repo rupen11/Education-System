@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import { FailureResponse, responseMessage, responseStatuscode, SuccessResponse } from "../helper";
 import { facultySchema } from "../model";
-import { CreateFacultyPayload, UpdateFacultyPayload } from "../type";
+import { CreateUserPayload, UpdateUserPayload } from "../type";
 import { createData, deleteData, readData, readDataByIds, retriveData, updateData } from "./crud_controller";
 
 export const createFaculty = async (req: Request, res: Response) => {
     try {
         // super admin must have enter password if password is correct then good to go otherwise not allowed
-        const createFaculty = await createData<CreateFacultyPayload>(req.body, facultySchema, "email", true);
+        const createFaculty = await createData<CreateUserPayload>(req.body, facultySchema, "email", true, true);
 
         if (createFaculty.success && createFaculty.statusCode === responseStatuscode.success) return SuccessResponse(responseMessage.created, createFaculty.data, res);
 
@@ -23,7 +23,7 @@ export const createFaculty = async (req: Request, res: Response) => {
 
 export const getFaculty = async (req: Request, res: Response) => {
     try {
-        const FacultyData = await readData(req.params.id, facultySchema);
+        const FacultyData = await readData(req.params.id, facultySchema, true);
 
         if (FacultyData.success && FacultyData.statusCode === responseStatuscode.success) return SuccessResponse(responseMessage.fetched, FacultyData.data, res);
 
@@ -66,9 +66,11 @@ export const retriveFaculty = async (req: Request, res: Response) => {
 export const updateFaculty = async (req: Request, res: Response) => {
     try {
         // super admin must have enter password if password is correct then good to go otherwise not allowed
-        const updateFaculty = await updateData<UpdateFacultyPayload>(req.body, facultySchema, req.params.id);
+        const updateFaculty = await updateData<UpdateUserPayload>(req.body, facultySchema, req.params.id, true);
 
-        if (updateFaculty.success && updateFaculty.statusCode === responseStatuscode.success) return SuccessResponse(responseMessage.updated, updateFaculty.data, res);
+        if (updateFaculty.success) return SuccessResponse(responseMessage.updated, updateFaculty.data, res);
+
+        if (updateFaculty.statusCode === responseStatuscode.badRequest) return FailureResponse(updateFaculty.statusCode, responseMessage.alreadyExists, res);
 
         return FailureResponse(updateFaculty.statusCode, responseMessage.updatingFail, res);
     }
@@ -81,7 +83,7 @@ export const updateFaculty = async (req: Request, res: Response) => {
 export const deleteFaculty = async (req: Request, res: Response) => {
     try {
         // super admin must have enter password if password is correct then good to go otherwise not allowed
-        const deleteFaculty = await deleteData(req.params.id, facultySchema);
+        const deleteFaculty = await deleteData(req.params.id, facultySchema, true);
 
         if (deleteFaculty.success && deleteFaculty.statusCode === responseStatuscode.success) return SuccessResponse(responseMessage.deleted, deleteFaculty.data, res);
 

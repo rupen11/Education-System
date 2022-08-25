@@ -13,7 +13,7 @@ const courseSchema = new Schema<CourseSchemaEntity>({
         required: true,
         ref: 'university_schema'
     },
-    courseName: {
+    name: {
         type: String,
         required: true,
     },

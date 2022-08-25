@@ -18,7 +18,7 @@ const lectureSchema = new Schema<LectureSchemaEntity>({
         required: true,
         ref: 'faculty_schema'
     },
-    subjectName: {
+    name: {
         type: String,
         required: true,
     },
@@ -30,12 +30,20 @@ const lectureSchema = new Schema<LectureSchemaEntity>({
         type: [],
         required: true,
     },
+    // startTime: {
+    //     type: Date,
+    //     required: true,
+    // },
+    // endTime: {
+    //     type: Date,
+    //     required: true,
+    // },
     startTime: {
-        type: Date,
+        type: String,
         required: true,
     },
     endTime: {
-        type: Date,
+        type: String,
         required: true,
     },
     reschedule: {

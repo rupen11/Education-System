@@ -24,13 +24,17 @@ const userSchema = new Schema<UserSchemaEntity>({
         required: true,
     },
     address: {
-        type: [],
+        type: String,
         required: true,
     },
     dateOfBirth: {
-        type: Date,
+        type: String,
         required: true,
     }
+});
+
+userSchema.virtual('id').get(function () {
+    return this._id.toString();
 });
 
 export default model<UserSchemaEntity>(schema_name.User, userSchema);

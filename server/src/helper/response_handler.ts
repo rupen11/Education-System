@@ -2,7 +2,7 @@ import { Response } from "express";
 import { responseStatuscode } from "./response_statuscode";
 
 export interface BaseResponseHandler<T> {
-    data: T | null;
+    data: T | null | object;
     success: boolean;
     statusCode: number;
 }

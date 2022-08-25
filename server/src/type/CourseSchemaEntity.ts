@@ -4,7 +4,7 @@ import { BaseSchemaEntity } from "./BaseSchemaEntity";
 export interface CourseSchemaEntity extends BaseSchemaEntity {
     adminId: Types.ObjectId;
     universityId: Types.ObjectId;
-    courseName: string;
+    name: string;
     courseCode: number;
     streams: [];
 }
