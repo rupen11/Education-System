@@ -13,7 +13,7 @@ const collegeSchema = new Schema<CollegeSchemaEntity>({
         required: true,
         ref: 'university_schema'
     },
-    collegeName: {
+    name: {
         type: String,
         required: true,
     },
