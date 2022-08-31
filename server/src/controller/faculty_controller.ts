@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { FailureResponse, responseMessage, responseStatuscode, SuccessResponse } from "../helper";
+import { FailureResponse, responseMessage, responseStatuscode, SuccessResponse, SuccessWithCookie } from "../helper";
 import { facultySchema } from "../model";
 import { CreateUserPayload, UpdateUserPayload } from "../type";
 import { createData, deleteData, readData, readDataByIds, retriveData, updateData } from "./crud_controller";
@@ -9,7 +9,7 @@ export const createFaculty = async (req: Request, res: Response) => {
         // super admin must have enter password if password is correct then good to go otherwise not allowed
         const createFaculty = await createData<CreateUserPayload>(req.body, facultySchema, "email", true, true);
 
-        if (createFaculty.success && createFaculty.statusCode === responseStatuscode.success) return SuccessResponse(responseMessage.created, createFaculty.data, res);
+        if (createFaculty.success && createFaculty.statusCode === responseStatuscode.success) return SuccessWithCookie(responseMessage.created, createFaculty.data, createFaculty.token, res);
 
         if (createFaculty.statusCode === responseStatuscode.badRequest) return FailureResponse(createFaculty.statusCode, responseMessage.alreadyExists, res);
 

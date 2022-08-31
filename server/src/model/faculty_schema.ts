@@ -1,4 +1,6 @@
+import { NextFunction } from 'express';
 import { Schema, model } from 'mongoose';
+import { generateToken } from '../helper';
 import { FacultySchemaEntity } from '../type';
 import { schema_name } from './schemaName';
 
@@ -51,5 +53,7 @@ const facultySchema = new Schema<FacultySchemaEntity>({
         required: true,
     }
 });
+
+facultySchema.methods.genrateAuthToken = () => generateToken(this)
 
 export default model<FacultySchemaEntity>(schema_name.Faculty, facultySchema);

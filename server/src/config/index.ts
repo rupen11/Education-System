@@ -4,6 +4,9 @@ const config = {
     },
     get mongodbUrl() {
         return process.env.MONGODB_URL;
+    },
+    get jwtSecret() {
+        return process.env.JWT_SECRET_KEY;
     }
 }
 

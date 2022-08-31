@@ -23,11 +23,11 @@ const lectureSchema = new Schema<LectureSchemaEntity>({
         required: true,
     },
     joinStudents: {
-        type: [],
+        type: Number,
         required: true,
     },
     enrollStudents: {
-        type: [],
+        type: Number,
         required: true,
     },
     // startTime: {

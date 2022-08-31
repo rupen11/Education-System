@@ -1,5 +1,6 @@
+import { Response } from "express";
 import { BaseResponseHandler, responseStatuscode } from "../helper";
-import { userSchema } from "../model";
+import { studentSchema, userSchema } from "../model";
 import { BasicPayloadEntity } from "../type/BaseSchemaEntity";
 import { checkByCourseCode, checkByEmail } from "../utils";
 import { createUser, deleteUser, getUser, updateUser } from "./user_controller";
@@ -39,15 +40,19 @@ export async function createData<T extends BasicPayloadEntity>(payload: T, mongo
 
         rest.userId = userData.id;
 
-        const createStudentData = new mongoModel(rest);
+        const createrData = new mongoModel(rest);
 
-        let saveStudentData = await createStudentData.save();
+        const token = createrData.genrateAuthToken();
 
-        if (!saveStudentData) return { data: null, success: false, statusCode: responseStatuscode.internalServerError }
+        if (!token) return { data: null, success: false, statusCode: responseStatuscode.internalServerError };
 
-        const data = { studentData: saveStudentData, personalData: userData.data };
+        let saveData = await createrData.save();
 
-        return { data, success: true, statusCode: responseStatuscode.success };
+        if (!saveData) return { data: null, success: false, statusCode: responseStatuscode.internalServerError }
+
+        const data = { studentData: saveData, personalData: userData.data };
+
+        return { data, success: true, token, statusCode: responseStatuscode.success };
     }
     else {
         const createData = new mongoModel(payload);

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { FailureResponse, responseMessage, responseStatuscode, SuccessResponse } from "../helper";
+import { FailureResponse, responseMessage, responseStatuscode, SuccessResponse, SuccessWithCookie } from "../helper";
 import { superAdminSchema } from "../model";
 import { CreateUserPayload, UpdateUserPayload } from "../type";
 import { createData, deleteData, readData, readDataByIds, retriveData, updateData } from "./crud_controller";
@@ -9,7 +9,7 @@ export const createSuperAdmin = async (req: Request, res: Response) => {
         // super admin must have enter password if password is correct then good to go otherwise not allowed
         const createSuperAdmin = await createData<CreateUserPayload>(req.body, superAdminSchema, "email", true, true);
 
-        if (createSuperAdmin.success && createSuperAdmin.statusCode === responseStatuscode.success) return SuccessResponse(responseMessage.created, createSuperAdmin.data, res);
+        if (createSuperAdmin.success && createSuperAdmin.statusCode === responseStatuscode.success) return SuccessWithCookie(responseMessage.created, createSuperAdmin.data, createSuperAdmin.token, res);
 
         if (createSuperAdmin.statusCode === responseStatuscode.badRequest) return FailureResponse(createSuperAdmin.statusCode, responseMessage.alreadyExists, res);
 
