@@ -11,6 +11,7 @@
     "author": "rj",
     "license": "ISC",
     "dependencies": {
+        "@types/cookie-parser": "^1.4.3",
         "@types/jsonwebtoken": "^8.5.9",
         "body-parser": "^1.20.0",
         "cors": "^2.8.5",

@@ -2,6 +2,8 @@ import { Schema, model } from 'mongoose';
 import { schema_name } from './schemaName';
 import { StudentSchemaEntity } from '../type';
 import { generateToken } from '../helper';
+import { sign } from 'jsonwebtoken';
+import { config } from '../config';
 
 const studentSchema = new Schema<StudentSchemaEntity>({
     userId: {
@@ -62,6 +64,8 @@ studentSchema.virtual('id').get(function () {
     return this._id.toString();
 });
 
-studentSchema.methods.genrateAuthToken = () => generateToken(this)
+studentSchema.methods.genrateAuthToken = function () {
+    return generateToken(this._id);
+}
 
 export default model<StudentSchemaEntity>(schema_name.Student, studentSchema);

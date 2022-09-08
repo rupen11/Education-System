@@ -1,7 +1,8 @@
 import { sign } from 'jsonwebtoken';
+import { Types } from 'mongoose';
 import { config } from '../config';
 
-export const generateToken = (data: any) => {
+export const generateToken = (id: Types.ObjectId) => {
     const option = { expiresIn: '1h' };
-    return sign({ id: data._id }, config.jwtSecret as string, option);
+    return sign({ id }, config.jwtSecret as string, option);
 }

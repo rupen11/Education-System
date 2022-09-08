@@ -28,6 +28,13 @@ const superAdminSchema = new Schema<SuperAdminSchemaEntity>({
     }
 });
 
-superAdminSchema.methods.genrateAuthToken = () => generateToken(this)
+superAdminSchema.virtual('id').get(function () {
+    return this._id.toString();
+});
+
+superAdminSchema.methods.genrateAuthToken = function () {
+    return generateToken(this._id);
+}
+
 
 export default model<SuperAdminSchemaEntity>(schema_name.Superadmin, superAdminSchema);

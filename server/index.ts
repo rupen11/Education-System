@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import { connectMongoDB } from './src/db'
 import { config } from './src/config';
+import cookieParser from 'cookie-parser';
 import { collegeRouter, courseRouter, facultyRouter, lectureRouter, studentRouter, superAdminRouter, universityRouter } from "./src/router"
 
 dotenv.config();
@@ -12,6 +13,7 @@ const app: Express = express();
 const port: string | number = config.serverPort;
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/api/college/v1", collegeRouter);
 app.use("/api/course/v1", courseRouter);

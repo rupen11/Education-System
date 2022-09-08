@@ -54,6 +54,13 @@ const facultySchema = new Schema<FacultySchemaEntity>({
     }
 });
 
-facultySchema.methods.genrateAuthToken = () => generateToken(this)
+facultySchema.virtual('id').get(function () {
+    return this._id.toString();
+});
+
+facultySchema.methods.genrateAuthToken = function () {
+    return generateToken(this._id);
+}
+
 
 export default model<FacultySchemaEntity>(schema_name.Faculty, facultySchema);
